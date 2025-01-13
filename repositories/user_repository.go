@@ -3,7 +3,7 @@ package repositories
 import (
 	"context"
 	"encoding/json"
-	model "example_api/models"
+	models "example_api/models"
 	"fmt"
 	"net/http"
 	"time"
@@ -37,7 +37,7 @@ func NewUserRepository(db *mongo.Database) *UserRepository {
 // @Failure 500 {object} map[string]interface{}
 // @Router /api/users [post]
 func (repo *UserRepository) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user model.User
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		http.Error(w, `{"status":400, "message":"Invalid input"}`, http.StatusBadRequest)
 		return
@@ -93,7 +93,7 @@ func (repo *UserRepository) GetUserByID(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	var user model.User
+	var user models.User
 	err = repo.collection.FindOne(context.TODO(), bson.M{"_id": id}).Decode(&user)
 	if err != nil {
 		http.Error(w, `{"status":404, "message":"User not found"}`, http.StatusNotFound)
